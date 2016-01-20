@@ -13,7 +13,6 @@ use <obiscad/vector.scad>
 use <scad-utils/linalg.scad>
 
 
-M_PI = 3.14159;
 mm = 1;
 inch = 25.4 * mm;
 
@@ -212,13 +211,13 @@ truncateTop=false)
 	max(5,
 	max(h/(max($fs,0.1)),
 	max(360.0 / $fa, 
-	r1*2*M_PI*turns / max($fs,0.1)))));
+	r1*2*PI*turns / max($fs,0.1)))));
 	
 	echo("Number of Steps calculations:");
 	echo("Minimum steps",5);
 	echo("By Height", h/(max($fs,0.1)));
 	echo("By Angle", 360.0 / $fa);
-	echo("By Perimeter", r1*2*M_PI*turns / max($fs,0.1));
+	echo("By Perimeter", r1*2*PI*turns / max($fs,0.1));
 	echo("From $fn", $fn);
 	echo("numSteps = ", numSteps);
 		

@@ -37,9 +37,10 @@ clamp_screw_head_depth = 1/8;
 
 module laser_nut(oversize = 0.005, thread_angle = 5) {
   scale(25.4)
-  difference(){
+  //difference()
+  {
     // Main part
-    translate([0,0,-h1]) union() {
+    *translate([0,0,-h1]) union() {
 		cylinder(r=r3, h=h);
 		cylinder(r=r2, h=h2);
 		cylinder(r=r1, h=h1);
@@ -49,13 +50,13 @@ module laser_nut(oversize = 0.005, thread_angle = 5) {
 
 
     // Slot
-    translate([0,-r1-1,slot_h])
+    *translate([0,-r1-1,slot_h])
       cube([3,3,slot_w]);
 
     // clamp screw
-    translate([clamp_screw_offset,0,-h1-.1])
+    *translate([clamp_screw_offset,0,-h1-.1])
         cylinder(r=clamp_screw_diameter/2,h=h);
-    translate([clamp_screw_offset,0, -h1-.0001])
+    *translate([clamp_screw_offset,0, -h1-.0001])
         cylinder(r=clamp_screw_head_diameter/2,h=clamp_screw_head_depth);
 
 
@@ -112,7 +113,23 @@ module laser_nut(oversize = 0.005, thread_angle = 5) {
 				truncateTop=false /*Todo: Still needs work!*/
 				);
 
-			scale([1.1,1,1])
+			translate([0,.4,-r1])
+			rotate(0)
+			auger(
+				rShaft = Auger_shaft_radius + oversize,
+				r1 = Auger_shaft_radius + Auger_flight_radius + oversize,
+				h = Auger_flight_length,
+				overhangAngle = 0,
+				topsideAngle = 0,
+				multiStart = Auger_num_flights,
+				flightThickness = Auger_flight_thickness,
+				turns = Auger_twist/360,
+				supportThickness = Auger_perimeter_thickness,
+				handedness="left",
+				truncateTop=false /*Todo: Still needs work!*/
+				);
+
+			*scale([1.1,1,1])
 			for (side = [0,180]) rotate([side])
 				translate([0,0,r1-lead_screw_diameter*.66])
 				cylinder(r1=0, r2= lead_screw_diameter, h = lead_screw_diameter);
@@ -122,4 +139,4 @@ module laser_nut(oversize = 0.005, thread_angle = 5) {
   }
 }
 
-laser_nut(oversize = 0.005, thread_angle = 5);
+laser_nut(oversize = 0.005, thread_angle = $t);

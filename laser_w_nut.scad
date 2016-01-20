@@ -13,7 +13,7 @@ r3 = .92 /2;
 
 h = .567;
 
-slot_t = .067;
+slot_w = .067;
 slot_h = .253 - h1;
 
 // tension screw
@@ -23,42 +23,19 @@ off_r1 = (.296 +.08)/2;
 // #6 screw
 
 
-//hole_center_h = .3; // probably centered between h1 and h
-offset = .028;
-bolt_head_r = .232;
-
-thread_to_black_part = .574;
-black_part = .372;
-metal_lip = .110;
-plastic_in_metal = .043;
 
 // Lead screw main:
 lead_screw_pitch = 20; // TPI
 lead_screw_starts = 2;
 lead_screw_diameter = 3/8;
-lead_screw_offset = thread_to_black_part - black_part - metal_lip
- + lead_screw_diameter / 2 ; // height as measured from bottom
+// lead screw is almost centered between h1 and h
 lead_screw_offset = (h - h1) / 2 + .028/2;
-
-// Lead Screw taper:
-ls_taper_len = 1/8;
-ls_taper_big = 1.5;
-ls_taper_small = 1;
-
-
-// Clamping Mechanism:
-slot_width = 1/32;
 
 clamp_screw_diameter = .1380; // #6 screw
 clamp_screw_offset = r1 - off_r1; // From center.
 
 clamp_screw_head_diameter = .226; // #6 socket head
 clamp_screw_head_depth = 1/8;
-
-
-main_radius = r1;
-main_height = h - h1;
-
 
 
 //////////////////////
@@ -126,8 +103,8 @@ scale(inch/mm) // mm to inch
 
 
     // Slot
-    translate([0,-main_radius-1,slot_h])
-      cube([3,3,slot_width]);
+    translate([0,-r1-1,slot_h])
+      cube([3,3,slot_w]);
 
     // clamp screw
     translate([clamp_screw_offset,0,-h1-.1])
@@ -141,7 +118,7 @@ scale(inch/mm) // mm to inch
 		{
 
 			//Auger_shaft_radius + Auger_flight_radius
-			translate([0,0,-main_radius])
+			translate([0,0,-r1])
 			scale(mm/inch)
 			auger(
 				rShaft = Auger_shaft_radius,
@@ -163,10 +140,10 @@ scale(inch/mm) // mm to inch
 			scale([1.2,1,1])
 			for (side = [-1,1])
 				rotate([90+side*90])
-				translate([0,0,main_radius-lead_screw_diameter*.7])
+				translate([0,0,r1-lead_screw_diameter*.7])
 				cylinder(r1=0, r2= lead_screw_diameter, h = lead_screw_diameter);
 
 		}
 
   }
-}
+

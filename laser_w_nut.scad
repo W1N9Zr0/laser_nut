@@ -123,10 +123,9 @@ module laser_nut() {
 				truncateTop=false /*Todo: Still needs work!*/
 				);
 
-			scale([1.2,1,1])
-			for (side = [-1,1])
-				rotate([90+side*90])
-				translate([0,0,r1-lead_screw_diameter*.7])
+			scale([1.1,1,1])
+			for (side = [0,180]) rotate([side])
+				translate([0,0,r1-lead_screw_diameter*.66])
 				cylinder(r1=0, r2= lead_screw_diameter, h = lead_screw_diameter);
 
 		}

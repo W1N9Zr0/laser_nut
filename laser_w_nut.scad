@@ -2,14 +2,40 @@ use <Thread_Library.scad>
 $fn=40;
 
 // The big part:
-main_radius = 0.9/2;
-main_height = 3/4;
+
+r1 = 1 /2;
+h1 = 0.067;
+r2 = .94 /2;
+h2 = .24;
+r3 = .92 /2;
+
+h = .567;
+
+slot_t = .067;
+slot_h = .253;
+
+// tension screw
+off_r3 = 0.14;
+off_r1 = (.296 +.08)/2;
+
+// #6 screw
+
+
+//hole_center_h = .3; // probably centered between h1 and h
+offset = .028;
+bolt_head_r = .232;
+
+thread_to_black_part = .574;
+black_part = .372;
+metal_lip = .110;
+plastic_in_metal = .043;
 
 // Lead screw main:
 lead_screw_pitch = 20; // TPI
 lead_screw_starts = 2;
 lead_screw_diameter = 3/8;
-lead_screw_offset = 1/2; // height as measured from bottom
+lead_screw_offset = thread_to_black_part - black_part - metal_lip 
+ + lead_screw_diameter / 2 ; // height as measured from bottom
 
 // Lead Screw taper:
 ls_taper_len = 1/8;
@@ -27,10 +53,18 @@ clamp_screw_head_diameter = 3/16;
 clamp_screw_head_depth = 1/8;
 
 
+main_radius = r1;
+main_height = h - h1;
+
 scale(25.4) // mm to inch
   difference(){
     // Main part
-    cylinder(r=main_radius, h=main_height);
+    translate([0,0,-h1]) union() {
+		cylinder(r=r3, h=h);
+		cylinder(r=r2, h=h2);
+		cylinder(r=r1, h=h1);
+	}
+	
 
 
 

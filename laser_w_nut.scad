@@ -133,8 +133,8 @@ scale(inch/mm) // mm to inch
     // clamp screw
     translate([clamp_screw_offset,0,-h1-.1])
         cylinder(r=clamp_screw_diameter/2,h=h);
-    translate([clamp_screw_offset,0,main_height - clamp_screw_head_depth])
-        cylinder(r=clamp_screw_head_diameter/2,h=5);
+    translate([clamp_screw_offset,0, -h1-.001])
+        cylinder(r=clamp_screw_head_diameter/2,h=clamp_screw_head_depth);
 
 
 	translate([0,0,lead_screw_offset])

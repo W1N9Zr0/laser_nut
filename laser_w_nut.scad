@@ -1,10 +1,10 @@
 use <CustomizableFastPrintableAuger.scad>
-//$fn=40;
+// all units in inches! output stl in mm using scale()
+
 $fa = 1;
 $fs = 0.02;
 
 // The big part:
-
 r1 = 1 /2;
 h1 = 0.067;
 r2 = .94 /2;
@@ -49,13 +49,13 @@ oversize = 0.005; //inch
 Auger_twist = 10*360; //[90:1080]
 
 //The radius of the auger's "flight" past the shaft
-Auger_flight_radius = (0.025+oversize)*25.4; //[5:50]
+Auger_flight_radius = (0.025+oversize); //[5:50]
 
 //The number of "flights"
 Auger_num_flights = 2;//[1:5]
 
 //The height, from top to bottom of the "shaft"
-Auger_flight_length = 1*25.4; //[10:200]
+Auger_flight_length = 1; //[10:200]
 
 //Angle of the top surface of the "flight"
 Auger_top_surface_angle =  5; //[-40:40]
@@ -71,26 +71,15 @@ Auger_perimeter_thickness = 0; //[0:None, 0.8:Thin, 2:Thick]
 /* [Uninteresting] */
 
 //The radius of the auger's "shaft"
-Auger_shaft_radius = (0.375 - (0.05 - oversize*2))*25.4/2; //[2:25]
+Auger_shaft_radius = (0.375 - (0.05 - oversize*2))/2; //[2:25]
 
 //The thickness of the "flight" (in the direction of height)
-Auger_flight_thickness =  0.025 * 25.4;  //[0.2:Thin, 1:Medium, 10:Thick]
+Auger_flight_thickness =  0.025;  //[0.2:Thin, 1:Medium, 10:Thick]
 
 Auger_handedness = "right";  //["right":Right, "left":Left]
 
-/* [Hidden] */
-
-
-
-
-
-M_PI = 3.14159;
-mm = 1;
-inch = 25.4 * mm;
-
-
-
-scale(inch/mm) // mm to inch
+module laser_nut() {
+  scale(25.4)
   difference(){
     // Main part
     translate([0,0,-h1]) union() {
@@ -109,7 +98,7 @@ scale(inch/mm) // mm to inch
     // clamp screw
     translate([clamp_screw_offset,0,-h1-.1])
         cylinder(r=clamp_screw_diameter/2,h=h);
-    translate([clamp_screw_offset,0, -h1-.001])
+    translate([clamp_screw_offset,0, -h1-.0001])
         cylinder(r=clamp_screw_head_diameter/2,h=clamp_screw_head_depth);
 
 
@@ -119,7 +108,7 @@ scale(inch/mm) // mm to inch
 
 			//Auger_shaft_radius + Auger_flight_radius
 			translate([0,0,-r1])
-			scale(mm/inch)
+			rotate(0)
 			auger(
 				rShaft = Auger_shaft_radius,
 				r1 = Auger_shaft_radius + Auger_flight_radius,
@@ -131,10 +120,7 @@ scale(inch/mm) // mm to inch
 				turns = Auger_twist/360,
 				supportThickness = Auger_perimeter_thickness,
 				handedness=Auger_handedness,
-				truncateTop=false, /*Todo: Still needs work!*/
-				/*$fn=10,*/
-				$fa=1,
-				$fs=0.5
+				truncateTop=false /*Todo: Still needs work!*/
 				);
 
 			scale([1.2,1,1])
@@ -146,4 +132,6 @@ scale(inch/mm) // mm to inch
 		}
 
   }
+}
 
+laser_nut();

@@ -1,4 +1,3 @@
-use <Thread_Library.scad>
 use <CustomizableFastPrintableAuger.scad>
 //$fn=40;
 $fa = 1;
@@ -170,33 +169,4 @@ scale(inch/mm) // mm to inch
 		}
 
   }
-
-
-
-
-module multi_start( pitch,diameter,starts){
-    length=20;
-    // 20 tpi = 1/20" * 25.4
-    pitch=25.4 / pitch; // (1/20" per inch * 25.4 mm/inch)
-    pitchRadius = diameter /2 * 25.4;
-    starts=starts;
-
-trapezoidThread(
-	length=length, 			// axial length of the threaded rod
-	pitch=pitch, 			// axial distance from crest to crest
-    starts=starts,
-	pitchRadius=pitchRadius, 	// radial distance from center to mid-profile
-	threadHeightToPitch=0.5, 	// ratio between the height of the profile and the pitch
-						// std value for Acme or metric lead screw is 0.5
-	profileRatio=0.5, 			// ratio between the lengths of the raised part of the profile and the pitch
-						// std value for Acme or metric lead screw is 0.5
-	threadAngle=29,			// angle between the two faces of the thread
-						// std value for Acme is 29 or for metric lead screw is 30
-	RH=true, 				// true/false the thread winds clockwise looking along shaft, i.e.follows the Right Hand Rule
-	clearance=0.1, 			// radial clearance, normalized to thread height
-	backlash=0.1, 			// axial clearance, normalized to pitch
-	stepsPerTurn=24,			// number of slices to create per turn,
-	showVertices=false
-		);
-
 }

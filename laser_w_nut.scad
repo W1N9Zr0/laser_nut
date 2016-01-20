@@ -16,20 +16,17 @@ h = .567;
 slot_w = .067;
 slot_h = .253 - h1;
 
-// tension screw
-off_r3 = 0.14;
-off_r1 = (.296 +.08)/2;
-
-// #6 screw
-
-
-
 // Lead screw main:
 lead_screw_pitch = 20; // TPI
 lead_screw_starts = 2;
 lead_screw_diameter = 3/8;
 // lead screw is almost centered between h1 and h
 lead_screw_offset = (h - h1) / 2 + .028/2;
+
+// Clamp screw:
+// clamp screw position measured from edges
+off_r3 = 0.14;
+off_r1 = (.296 +.08)/2;
 
 clamp_screw_diameter = .1380; // #6 screw
 clamp_screw_offset = r1 - off_r1; // From center.
@@ -38,47 +35,7 @@ clamp_screw_head_diameter = .226; // #6 socket head
 clamp_screw_head_depth = 1/8;
 
 
-//////////////////////
-//CUSTOMIZER OPTIONS//
-//////////////////////
-
-oversize = 0.005; //inch
-/* [Auger] */
-
-//The total amount of twist, in degrees
-Auger_twist = 10*360; //[90:1080]
-
-//The radius of the auger's "flight" past the shaft
-Auger_flight_radius = (0.025+oversize); //[5:50]
-
-//The number of "flights"
-Auger_num_flights = 2;//[1:5]
-
-//The height, from top to bottom of the "shaft"
-Auger_flight_length = 1; //[10:200]
-
-//Angle of the top surface of the "flight"
-Auger_top_surface_angle =  5; //[-40:40]
-
-/* [Printer] */
-
-//The overhang angle your printer is capable of
-Printer_overhang_capability = 5; //[0:40]
-
-//The thickness of perimeter support material
-Auger_perimeter_thickness = 0; //[0:None, 0.8:Thin, 2:Thick]
-
-/* [Uninteresting] */
-
-//The radius of the auger's "shaft"
-Auger_shaft_radius = (0.375 - (0.05 - oversize*2))/2; //[2:25]
-
-//The thickness of the "flight" (in the direction of height)
-Auger_flight_thickness =  0.025;  //[0.2:Thin, 1:Medium, 10:Thick]
-
-Auger_handedness = "right";  //["right":Right, "left":Left]
-
-module laser_nut() {
+module laser_nut(oversize = 0.005, thread_angle = 5) {
   scale(25.4)
   difference(){
     // Main part
@@ -105,6 +62,38 @@ module laser_nut() {
 	translate([0,0,lead_screw_offset])
 		rotate([90,0,0])
 		{
+			thread_p = 1 / lead_screw_pitch;
+
+			//The radius of the auger's "flight" past the shaft
+			Auger_flight_radius = thread_p/2 + oversize; //[5:50]
+
+			//The number of "flights"
+			Auger_num_flights = lead_screw_starts;//[1:5]
+
+			//The height, from top to bottom of the "shaft"
+			Auger_flight_length = r1 * 2; //[10:200]
+
+			//The total amount of twist, in degrees
+			Auger_twist = Auger_flight_length / thread_p / lead_screw_starts *360; //[90:1080]
+
+			//Angle of the top surface of the "flight"
+			Auger_top_surface_angle =  thread_angle; //[-40:40]
+
+			//The overhang angle your printer is capable of
+			Printer_overhang_capability = thread_angle; //[0:40]
+
+			//The thickness of perimeter support material
+			Auger_perimeter_thickness = 0; //[0:None, 0.8:Thin, 2:Thick]
+
+			/* [Uninteresting] */
+
+			//The radius of the auger's "shaft"
+			Auger_shaft_radius = lead_screw_diameter/2 - thread_p/2 + oversize; //[2:25]
+
+			//The thickness of the "flight" (in the direction of height)
+			Auger_flight_thickness =  thread_p/2;  //[0.2:Thin, 1:Medium, 10:Thick]
+
+			Auger_handedness = "right";  //["right":Right, "left":Left]
 
 			//Auger_shaft_radius + Auger_flight_radius
 			translate([0,0,-r1])
@@ -133,4 +122,4 @@ module laser_nut() {
   }
 }
 
-laser_nut();
+laser_nut(oversize = 0.005, thread_angle = 5);

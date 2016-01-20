@@ -65,7 +65,7 @@ module laser_nut(oversize = 0.005, thread_angle = 5) {
 			thread_p = 1 / lead_screw_pitch;
 
 			//The radius of the auger's "flight" past the shaft
-			Auger_flight_radius = thread_p/2 + oversize; //[5:50]
+			Auger_flight_radius = thread_p/2; //[5:50]
 
 			//The number of "flights"
 			Auger_num_flights = lead_screw_starts;//[1:5]
@@ -88,7 +88,7 @@ module laser_nut(oversize = 0.005, thread_angle = 5) {
 			/* [Uninteresting] */
 
 			//The radius of the auger's "shaft"
-			Auger_shaft_radius = lead_screw_diameter/2 - thread_p/2 + oversize; //[2:25]
+			Auger_shaft_radius = lead_screw_diameter/2 - thread_p/2; //[2:25]
 
 			//The thickness of the "flight" (in the direction of height)
 			Auger_flight_thickness =  thread_p/2;  //[0.2:Thin, 1:Medium, 10:Thick]
@@ -99,8 +99,8 @@ module laser_nut(oversize = 0.005, thread_angle = 5) {
 			translate([0,0,-r1])
 			rotate(0)
 			auger(
-				rShaft = Auger_shaft_radius,
-				r1 = Auger_shaft_radius + Auger_flight_radius,
+				rShaft = Auger_shaft_radius + oversize,
+				r1 = Auger_shaft_radius + Auger_flight_radius + oversize,
 				h = Auger_flight_length,
 				overhangAngle = Printer_overhang_capability,
 				topsideAngle = Auger_top_surface_angle,

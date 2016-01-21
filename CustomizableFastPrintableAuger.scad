@@ -81,7 +81,7 @@ module augerFlight(numSteps, flightThickness, turns, rShaft, r1, h, topsideAngle
 	extraTopsideFlight = tan(topsideAngle)*(r1-rShaft);
 	//echo("Calculated extra flight thickness (from topsideAngle angle) (mm): ", extraTopsideFlight);
 
-	height = max(0.001, h - flightThickness - extraTopsideFlight); //Must be strictly >0 so we actually get something,
+	height = max(0.001, h); //Must be strictly >0 so we actually get something,
 	
 	heightStep=(height/numSteps);
 	echo("height: ", height, " numSteps:", numSteps, " turns: ", turns);

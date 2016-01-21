@@ -10,20 +10,21 @@ clearance = 0.1;
 thread_gauge = false;
 
 oversize = 0.005*inch;
+oversize_threads = oversize;
 thread_angle = 10;
 
-laser_nut(oversize = oversize, oversize_threads = oversize*2, thread_angle = thread_angle);
+laser_nut(oversize = oversize, oversize_threads = oversize_threads, thread_angle = thread_angle);
 
 translate([0,0,h+1]) {
 	intersection() {
-		laser_nut(oversize = oversize, oversize_threads = oversize*2, thread_angle = thread_angle, two_screws = true);
+		laser_nut(oversize = oversize, oversize_threads = oversize_threads, thread_angle = thread_angle, two_screws = true);
 		translate([0,0,-h1-fudge]) cylinder(r=r1*1.5, h= h1 + slot_h + fudge, $fn=4);
 	}
 
 	translate([0,0,h-h1+slot_h+1])
 	rotate([180,0,0])
 	difference() {
-		laser_nut(oversize = oversize, oversize_threads = oversize*2, thread_angle = thread_angle, two_screws = true);
+		laser_nut(oversize = oversize, oversize_threads = oversize_threads, thread_angle = thread_angle, two_screws = true);
 		translate([0,0,-h1-fudge]) cylinder(r=r1*1.5, h= h1 + slot_h + fudge+clearance/2, $fn=4);
 	}
 }

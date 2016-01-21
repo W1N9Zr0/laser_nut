@@ -34,9 +34,9 @@ off_r3 = .14*inch;
 off_r1 = (.296 +.08)*inch/2;
 
 clamp_screw_offset = r1 - off_r1; // From center.
-clamp_screw_diameter = 3*mm + clearance*2; // M3 socket head
-clamp_screw_head_diameter = 5.5*mm + clearance*2;
-clamp_screw_head_depth = 3*mm + clearance;
+clamp_screw_diameter = 3*mm + clearance*2; // M3 button head
+clamp_screw_head_diameter = 5.7*mm + clearance*2;
+clamp_screw_head_depth = 1.65*mm + clearance;
 clamp_nut_diameter = 5.5*mm + clearance*2;
 clamp_nut_height = 2.4*mm + clearance;
 
@@ -63,6 +63,7 @@ module laser_nut(oversize = .005*inch, thread_angle = 5) {
         cylinder(d=clamp_screw_head_diameter,h=clamp_screw_head_depth+fudge);
 		translate([0,0,h-clamp_nut_height]) rotate(180/6)
 			cylinder(d = clamp_nut_diameter / cos(180/6), h=clamp_nut_height+fudge*2, $fn = 6);
+		echo("	Required screw length (excluding head):", h - clamp_screw_head_depth);
 	}
 
 

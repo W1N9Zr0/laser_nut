@@ -263,12 +263,12 @@ truncateTop=false)
 	minHeight = flight_root_thickness > h ? flight_root_thickness : h;
 	echo("minHeight", minHeight);
 	
-	minValidHeight = (heightAtWhichFlightJustNotSelfIntersecting > h ? heightAtWhichFlightJustNotSelfIntersecting : minHeight);
+	minValidHeight = minHeight;
 	echo("minValidHeight", minValidHeight);
 	
-	if(minValidHeight > h)
+	if(heightAtWhichFlightJustNotSelfIntersecting > h)
 	{
-		echo("WARNING: Automatically extending height of auger so that each flight does not intersect another.");		
+		echo("WARNING: Flight intersect one-another. Minimum height for this pitch is:", heightAtWhichFlightJustNotSelfIntersecting);
 	}
 	
 	*cylinder(h=minValidHeight,r=r1,$fn=20);

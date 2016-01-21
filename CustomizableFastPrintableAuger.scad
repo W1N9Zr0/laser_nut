@@ -295,8 +295,8 @@ truncateTop=false)
 			
 			//Cut off bottom of auger so it's printable.
 			
-			translate([0,0,-1 * extraFlight])
-			cube([r1 * 3,r1 * 3,2*extraFlight], center=true);
+			rotate([180])
+				cylinder(r=r1*2, h=r1*tan(overhangAngle)*2, $fn=4);
 			
 			// if(truncateTop)
 			// {
@@ -306,7 +306,7 @@ truncateTop=false)
 		}
 	
 		if(truncateTop)
-			cylinder(r=r1*2, h=minValidHeight);
+			cylinder(r=r1*2, h=minValidHeight, $fn=4);
 	}
 }
 

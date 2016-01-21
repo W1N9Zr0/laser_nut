@@ -91,7 +91,7 @@ module laser_nut(oversize = 0.005, thread_angle = 5) {
 			Auger_shaft_radius = lead_screw_diameter/2 - thread_p/2; //[2:25]
 
 			//The thickness of the "flight" (in the direction of height)
-			Auger_flight_thickness =  thread_p/2;  //[0.2:Thin, 1:Medium, 10:Thick]
+			Auger_flight_thickness =  thread_p/2 -thread_p/4*sin(thread_angle)*2;  //[0.2:Thin, 1:Medium, 10:Thick]
 
 			Auger_handedness = "right";  //["right":Right, "left":Left]
 
@@ -109,8 +109,15 @@ module laser_nut(oversize = 0.005, thread_angle = 5) {
 				turns = Auger_twist/360,
 				supportThickness = Auger_perimeter_thickness,
 				handedness=Auger_handedness,
-				truncateTop=false /*Todo: Still needs work!*/
+				truncateTop=true /*Todo: Still needs work!*/
 				);
+
+			// thread gauge
+			%color([1,0,1,0.3])
+			translate([0,lead_screw_diameter/2, -thread_p/2 + Auger_flight_thickness/2])
+			for (i = [1:lead_screw_pitch])
+				translate([0,0, i/lead_screw_pitch-.5])
+				cube([.2,.1,Auger_flight_thickness], center = true);
 
 			scale([1.1,1,1])
 			for (side = [0,180]) rotate([side])

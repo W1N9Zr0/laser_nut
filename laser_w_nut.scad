@@ -1,42 +1,42 @@
 use <CustomizableFastPrintableAuger.scad>
-// all units in inches! output stl in mm using scale()
+mm = 1;
+inch = 25.4*mm;
 
 $fa = 1;
-$fs = 0.02;
+$fs = .5;
 
 // The big part:
-r1 = 1 /2;
-h1 = 0.067;
-r2 = .94 /2;
-h2 = .24;
-r3 = .92 /2;
+r1 = 1*inch /2;
+h1 = .067*inch;
+r2 = .94*inch /2;
+h2 = .24*inch;
+r3 = .92*inch /2;
 
-h = .567;
+h = .567*inch;
 
-slot_w = .067;
-slot_h = .253 - h1;
+slot_w = .067*inch;
+slot_h = .253*inch - h1;
 
 // Lead screw main:
 lead_screw_pitch = 20; // TPI
 lead_screw_starts = 2;
-lead_screw_diameter = 3/8;
+lead_screw_diameter = 3/8*inch;
 // lead screw is almost centered between h1 and h
-lead_screw_offset = (h - h1) / 2 + .028/2;
+lead_screw_offset = (h - h1) / 2 + .028*inch/2;
 
 // Clamp screw:
 // clamp screw position measured from edges
-off_r3 = 0.14;
-off_r1 = (.296 +.08)/2;
+off_r3 = .14*inch;
+off_r1 = (.296 +.08)*inch/2;
 
-clamp_screw_diameter = .1380; // #6 screw
+clamp_screw_diameter = .1380*inch; // #6 screw
 clamp_screw_offset = r1 - off_r1; // From center.
 
-clamp_screw_head_diameter = .226; // #6 socket head
-clamp_screw_head_depth = 1/8;
+clamp_screw_head_diameter = .226*inch; // #6 socket head
+clamp_screw_head_depth = .138*inch;
 
 
-module laser_nut(oversize = 0.005, thread_angle = 5) {
-  scale(25.4)
+module laser_nut(oversize = .005*inch, thread_angle = 5) {
   difference(){
     // Main part
     translate([0,0,-h1]) union() {
@@ -49,20 +49,20 @@ module laser_nut(oversize = 0.005, thread_angle = 5) {
 
 
     // Slot
-    translate([0,-r1-1,slot_h])
-      cube([3,3,slot_w]);
+    translate([0,-r1,slot_h])
+      cube([r1,r1*2,slot_w]);
 
     // clamp screw
-    translate([clamp_screw_offset,0,-h1-.1])
-        cylinder(r=clamp_screw_diameter/2,h=h);
-    translate([clamp_screw_offset,0, -h1-.0001])
-        cylinder(r=clamp_screw_head_diameter/2,h=clamp_screw_head_depth);
+    translate([clamp_screw_offset,0,-h1-.01]) {
+        cylinder(r=clamp_screw_diameter/2,h=h+.02);
+        cylinder(r=clamp_screw_head_diameter/2,h=clamp_screw_head_depth+.01);
+	}
 
 
 	translate([0,0,lead_screw_offset])
 		rotate([90,0,0])
 		{
-			thread_p = 1 / lead_screw_pitch;
+			thread_p = 1*inch / lead_screw_pitch;
 
 			//The radius of the auger's "flight" past the shaft
 			Auger_flight_radius = thread_p/2; //[5:50]
@@ -109,7 +109,7 @@ module laser_nut(oversize = 0.005, thread_angle = 5) {
 				turns = Auger_twist/360,
 				supportThickness = Auger_perimeter_thickness,
 				handedness=Auger_handedness,
-				truncateTop=true /*Todo: Still needs work!*/
+				truncateTop=true
 				);
 
 			// thread gauge
@@ -129,4 +129,4 @@ module laser_nut(oversize = 0.005, thread_angle = 5) {
   }
 }
 
-laser_nut(oversize = 0.005, thread_angle = 5);
+laser_nut(oversize = .005*inch, thread_angle = 5);

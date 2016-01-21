@@ -66,9 +66,9 @@ module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0, two_screw
   difference(){
     // Main part
     translate([0,0,-h1]) union() {
-		cylinder(r=r3, h=h);
-		cylinder(r=r2, h=h2);
-		cylinder(r=r1, h=h1);
+		cylinder(r=r3-clearance/2, h=h);
+		cylinder(r=r2-clearance/2, h=h2);
+		cylinder(r=r1-clearance/2, h=h1-clearance/2);
 	}
 
 	if (thread_gauge)
@@ -77,7 +77,7 @@ module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0, two_screw
 
     // Slot
     translate([0,-r1,slot_h])
-      cube([r1,r1*2,slot_w]);
+      cube([r1,r1*2,slot_w+clearance]);
 
     // clamp screw
 	for (side = [0:two_screws?1:0]) rotate(side*180)

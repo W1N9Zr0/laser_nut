@@ -284,9 +284,6 @@ truncateTop=false)
 		
 	intersection()
 	{
-		difference()
-		{
-
 			auger_not_truncated(rShaft=rShaft, r1=r1, h=extendedMinValidHeight, turns=turns*(handedness=="right"?1:-1), 
 			flightThickness=flightThickness, overhangAngle=overhangAngle, topsideAngle=topsideAngle,
 			multiStart=multiStart, supportThickness=supportThickness,
@@ -295,18 +292,14 @@ truncateTop=false)
 			
 			//Cut off bottom of auger so it's printable.
 			
-			rotate([180])
-				cylinder(r=r1*2, h=r1*tan(overhangAngle)*2, $fn=4);
+			cylinder(r=r1*2, h= minValidHeight * (truncateTop ? 1 : 2), $fn=4);
 			
 			// if(truncateTop)
 			// {
 				// translate([0,0,extendedMinValidHeight])
 				// #cube([r1 * 3,r1 * 3,2*(extraFlight+flightThickness)], center=true);
 			// }
-		}
 	
-		if(truncateTop)
-			cylinder(r=r1*2, h=minValidHeight, $fn=4);
 	}
 }
 

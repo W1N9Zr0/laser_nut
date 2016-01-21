@@ -7,6 +7,8 @@ $fs = .5;
 fudge = 0.001; // fudge factor for overlapping boolean ops
 clearance = 0.1;
 
+thread_gauge = false;
+
 laser_nut(oversize = .005*inch, oversize_threads = 0.005*inch*2, thread_angle = 5);
 
 // The big part:
@@ -50,8 +52,9 @@ module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0) {
 		cylinder(r=r1, h=h1);
 	}
 
-
-
+	if (thread_gauge)
+		translate([0,0,-h])
+		cylinder(r=r1*2, h = h+slot_h+fudge, $fn = 4);
 
     // Slot
     translate([0,-r1,slot_h])
@@ -121,11 +124,12 @@ module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0) {
 				);
 
 			// thread gauge
-			*%color([1,0,1,0.3])
-			translate([0,lead_screw_diameter/2, -thread_p/2 + Auger_flight_thickness/2])
-			for (i = [1:lead_screw_pitch])
-				translate([0,0, i/lead_screw_pitch-.5])
-				cube([.2,.1,Auger_flight_thickness], center = true);
+			if (thread_gauge)
+				%color([0,1,0,0.3])
+				translate([0,lead_screw_diameter/2, -thread_p/2 + (Auger_flight_thickness+oversize_threads)/2])
+				for (i = [1:lead_screw_pitch])
+					translate([0,0, (i/lead_screw_pitch-.5)*inch])
+					cube([2,3,Auger_flight_thickness], center = true);
 
 			scale([1.1,1,1])
 			for (side = [0,180]) rotate([side])

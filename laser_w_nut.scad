@@ -7,7 +7,7 @@ $fs = .5;
 fudge = 0.001; // fudge factor for overlapping boolean ops
 clearance = 0.1;
 
-laser_nut(oversize = .005*inch, thread_angle = 5);
+laser_nut(oversize = .005*inch, oversize_threads = 0.005*inch*2, thread_angle = 5);
 
 // The big part:
 r1 = 1*inch /2;
@@ -41,7 +41,7 @@ clamp_nut_diameter = 5.5*mm + clearance*2;
 clamp_nut_height = 2.4*mm + clearance;
 
 
-module laser_nut(oversize = .005*inch, thread_angle = 5) {
+module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0) {
   difference(){
     // Main part
     translate([0,0,-h1]) union() {
@@ -113,7 +113,7 @@ module laser_nut(oversize = .005*inch, thread_angle = 5) {
 				overhangAngle = Printer_overhang_capability,
 				topsideAngle = Auger_top_surface_angle,
 				multiStart = Auger_num_flights,
-				flightThickness = Auger_flight_thickness,
+				flightThickness = Auger_flight_thickness + oversize_threads,
 				turns = Auger_twist/360,
 				supportThickness = Auger_perimeter_thickness,
 				handedness=Auger_handedness,

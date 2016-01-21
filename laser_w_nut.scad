@@ -9,7 +9,26 @@ clearance = 0.1;
 
 thread_gauge = false;
 
-laser_nut(oversize = .005*inch, oversize_threads = 0.005*inch*2, thread_angle = 5);
+oversize = 0.005*inch;
+thread_angle = 10;
+
+laser_nut(oversize = oversize, oversize_threads = oversize*2, thread_angle = thread_angle);
+
+translate([0,0,h+1]) {
+	intersection() {
+		laser_nut(oversize = oversize, oversize_threads = oversize*2, thread_angle = thread_angle, two_screws = true);
+		translate([0,0,-h1-fudge]) cylinder(r=r1*1.5, h= h1 + slot_h + fudge, $fn=4);
+	}
+
+	translate([0,0,h-h1+slot_h+1])
+	rotate([180,0,0])
+	difference() {
+		laser_nut(oversize = oversize, oversize_threads = oversize*2, thread_angle = thread_angle, two_screws = true);
+		translate([0,0,-h1-fudge]) cylinder(r=r1*1.5, h= h1 + slot_h + fudge+clearance/2, $fn=4);
+	}
+}
+
+
 
 // The big part:
 r1 = 1*inch /2;
@@ -43,7 +62,7 @@ clamp_nut_diameter = 5.5*mm + clearance*2;
 clamp_nut_height = 2.4*mm + clearance;
 
 
-module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0) {
+module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0, two_screws = false) {
   difference(){
     // Main part
     translate([0,0,-h1]) union() {
@@ -61,6 +80,7 @@ module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0) {
       cube([r1,r1*2,slot_w]);
 
     // clamp screw
+	for (side = [0:two_screws?1:0]) rotate(side*180)
     translate([clamp_screw_offset,0,-h1-fudge]) {
         cylinder(d=clamp_screw_diameter,h=h+fudge*2);
         cylinder(d=clamp_screw_head_diameter,h=clamp_screw_head_depth+fudge);

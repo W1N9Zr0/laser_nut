@@ -84,7 +84,8 @@ module augerFlight(numSteps, flightThickness, turns, rShaft, r1, h, topsideAngle
 	height = max(0.001, h - flightThickness - extraTopsideFlight); //Must be strictly >0 so we actually get something,
 	
 	heightStep=(height/numSteps);
-	//echo("Calculated height step (mm): ", heightStep);
+	echo("height: ", height, " numSteps:", numSteps, " turns: ", turns);
+	echo("Calculated height step (mm): ", heightStep);
 
 	shape_points = augerFlightCrossSection(flightThickness, extraTopsideFlight, extraFlight, r1-rShaft);
 	
@@ -332,6 +333,7 @@ module auger_not_truncated(rShaft = 0.5*inch, r1=1*inch, h=1*inch, turns=1, flig
 	echo("extraTopFlight",extraTopFlight);
 	extraTopFlightBelowZero = extraTopFlight < 0 ? -1 * extraTopFlight : 0;
 	echo("extraTopFlightBelowZero",extraTopFlightBelowZero);
+	echo("cylinder height: ", h);
 	
 	cylinder(r=rShaft, h=h, $fn=numSteps); //Central shaft
 	

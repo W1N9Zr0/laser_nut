@@ -12,7 +12,7 @@ thread_gauge = false;
 oversize = 0.005*inch;
 oversize_threads = oversize;
 
-laser_nut(oversize = oversize, oversize_threads = oversize_threads, thread_angle = 15);
+laser_nut(oversize = oversize, oversize_threads = oversize_threads, thread_angle = 15, shrink_od = true);
 
 translate([0,0,h+1]) {
 	intersection() {
@@ -65,13 +65,13 @@ clamp_nut_diameter = 5.5*mm + clearance*2;
 clamp_nut_height = 2.4*mm + clearance;
 
 
-module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0, two_screws = false) {
+module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0, two_screws = false, shrink_od = false) {
   difference(){
     // Main part
     translate([0,0,-h1]) union() {
-		cylinder(r=r3-clearance/2, h=h);
-		cylinder(r=r2-clearance/2, h=h2);
-		cylinder(r=r1-clearance/2, h=h1-clearance/2);
+		cylinder(r=r3-(shrink_od ? clearance/2 : 0), h=h);
+		cylinder(r=r2-(shrink_od ? clearance/2 : 0), h=h2);
+		cylinder(r=r1-(shrink_od ? clearance/2 : 0), h=h1-(shrink_od ? clearance/2 : 0));
 	}
 
 	if (thread_gauge)

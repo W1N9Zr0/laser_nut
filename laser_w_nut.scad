@@ -4,7 +4,7 @@ inch = 25.4*mm;
 
 $fa = 1;
 $fs = .5;
-fudge = 0.001; // fudge factor for overlapping boolean ops
+fudge = 0.01; // fudge factor for overlapping boolean ops
 clearance = 0.1;
 
 thread_gauge = false;
@@ -53,8 +53,8 @@ module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0) {
 	}
 
 	if (thread_gauge)
-		translate([0,0,-h])
-		cylinder(r=r1*2, h = h+slot_h+fudge, $fn = 4);
+		translate([0,0,-h1-fudge])
+		cylinder(r=r1*2, h = h1+lead_screw_offset+fudge*2, $fn = 4);
 
     // Slot
     translate([0,-r1,slot_h])
@@ -107,7 +107,7 @@ module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0) {
 			Auger_handedness = "right";  //["right":Right, "left":Left]
 
 			//Auger_shaft_radius + Auger_flight_radius
-			translate([0,0,-r1])
+			translate([0,0,-r1-oversize_threads/2])
 			rotate(0)
 			auger(
 				rShaft = Auger_shaft_radius + oversize,
@@ -117,6 +117,23 @@ module laser_nut(oversize = 0, oversize_threads = 0, thread_angle = 0) {
 				topsideAngle = Auger_top_surface_angle,
 				multiStart = Auger_num_flights,
 				flightThickness = Auger_flight_thickness + oversize_threads,
+				turns = Auger_twist/360,
+				supportThickness = Auger_perimeter_thickness,
+				handedness=Auger_handedness,
+				truncateTop=true
+				);
+
+			// simple 0 degree auger to compare against
+			*translate([0,0,-r1])
+			rotate(0)
+			%auger(
+				rShaft = Auger_shaft_radius,
+				r1 = Auger_shaft_radius + Auger_flight_radius,
+				h = Auger_flight_length,
+				overhangAngle = 0,
+				topsideAngle = 0,
+				multiStart = Auger_num_flights,
+				flightThickness = Auger_flight_thickness,
 				turns = Auger_twist/360,
 				supportThickness = Auger_perimeter_thickness,
 				handedness=Auger_handedness,
